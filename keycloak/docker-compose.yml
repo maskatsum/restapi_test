@@ -1,0 +1,34 @@
+version: '3'
+
+volumes:
+  mysql_data:
+    driver: local
+
+services:
+  mysql:
+    image: mysql:8.0.27
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 928eU75F!
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: er8z3tw6
+  keycloak:
+    depends_on:
+      - mysql
+    image: quay.io/keycloak/keycloak:22.0.3
+    environment:
+      DB: MYSQL
+      DB_URL_HOST: mysql
+      DB_SCHEMA: keycloak
+      DB_USERNAME: keycloak
+      DB_PASSWORD: er8z3tw6
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: er8z3tw6
+      KC_HOSTNAME_STRICT: 'false'
+      KC_HTTP_RELATIVE_PATH: /keycloak
+      KC_PROXY: edge
+    command:
+      - start
+
