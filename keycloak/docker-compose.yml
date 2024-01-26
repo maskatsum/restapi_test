@@ -17,13 +17,17 @@ services:
       MYSQL_PASSWORD: er8z3tw6
     ports:
       - 3306:3306
+    networks:
+      - internal
   
   keycloak:
     depends_on:
-      - mysql
+      mysql:
+        condition: "service_heatlhy"
+        
     image: quay.io/keycloak/keycloak:22.0.3
     environment:
-      DB: MYSQL
+      DB: mysql
       DB_URL: jdbc:mysql://mysql:3306/keycloak
       DB_USERNAME: keycloak
       DB_PASSWORD: er8z3tw6
@@ -33,4 +37,9 @@ services:
       - 8080:8080
     command:
       - start-dev
+    networks:
+      - internal
 
+networks:
+  internal:
+    driver: bridge
