@@ -6,3 +6,6 @@ keycloak/api-key-module/dependency-reduced-pom.xml
 keycloak/_volumes/
 _volumes/
 _sessions/
+.m2
+dashboard-service/dependency-reduced-pom.xml
+dashboard-service/target/

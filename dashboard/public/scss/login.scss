@@ -1,0 +1,30 @@
+@import './base';
+
+#loginFrame {
+    width: 300px;
+    display: flex;
+    border: 1px solid red;
+    background-color: white;
+    flex-direction: column;
+    padding: 2em;
+
+    label, input {
+        flex: 1 1 0;
+    }
+
+    ul {
+        width: 100%;
+        list-style: none;
+        padding: 0;
+        li {
+            display: flex;
+            margin: 1em 0;
+        }
+    }
+    li#register {
+        justify-content: center;
+    }
+    input[type="submit"] {
+        width: 80%;
+    }
+}

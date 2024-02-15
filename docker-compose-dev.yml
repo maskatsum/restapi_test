@@ -9,27 +9,6 @@ networks:
     driver: bridge
     
 services:
-  # https-portal:
-  #   logging:
-  #     driver: "json-file"
-  #     options:
-  #       max-size: "10m"
-  #   container_name: "my-https-portal"
-  #   image: steveltn/https-portal:1
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   restart: ${DOCKER_RESTART:-no}
-  #   environment:
-  #     CLIENT_MAX_BODY_SIZE: 20M
-  #     DOMAINS: >-
-  #       auth-server -> http://dockerhost:8080 #local,
-  #       localhost -> http://dockerhost:8080 #local,
-  #     STAGE: ${HTTPS_ENV:-local}
-  #   volumes:
-  #     - ./_volumes/cert:/var/lib/https-portal
-  #   depends_on:
-  #     - keycloak
 
   keycloak-mysql-db:
     image: mysql:8.0.27
@@ -57,9 +36,9 @@ services:
         condition: "service_healthy"
 
     container_name: keycloak
-    build:
-      context: ./keycloak/   
-    #image: quay.io/keycloak/keycloak:23.0.5
+    #build:
+    #  context: ./keycloak/   
+    image: quay.io/keycloak/keycloak:23.0.5
     environment:
       # https://qiita.com/uturned0/items/e9256c48ccba6f588d79
       KC_DB: mysql
@@ -71,17 +50,17 @@ services:
       
       KC_HOSTNAME: "localhost:8080"
       #to keep compatible with other services that are expecting /auth
-      #KC_HTTP_RELATIVE_PATH: /auth
+      KC_HTTP_RELATIVE_PATH: /auth
 
       # https://stackoverflow.com/a/75649421
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
       KC_PROXY: "edge"
-      # JAVA_OPTS_APPEND: "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/import -Dkeycloak.migration.strategy=IGNORE_EXISTING"
+      JAVA_OPTS_APPEND: "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/import -Dkeycloak.migration.strategy=IGNORE_EXISTING"
     volumes:
-      # - ./import:/import
-      - ./api-key-module/target/deploy:/opt/keycloak/providers/
+      - ./keycloak/import:/import
+      - ./keycloak/api-key-module/target/deploy:/opt/keycloak/providers/
 
     ports:
       - 8080:8080
@@ -90,6 +69,16 @@ services:
     networks:
       - internal
 
+  # for demonstration
+  dashboard-service:
+    build:
+      context: ./dashboard-service/   
+    environment:
+      REALM_NAME: example
+    ports:
+      - "8180:8180"
+
+  # for debugging
   phpmyadmin:
     container_name: keycloak-phpmyadmin
     image: phpmyadmin:latest
@@ -106,4 +95,3 @@ services:
       - keycloak-mysql-db
     volumes:
       - ./_sessions:/sessions
-

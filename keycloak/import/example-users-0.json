@@ -1,0 +1,29 @@
+{
+  "realm" : "example",
+  "users" : [ {
+    "id" : "ba0039ef-9959-4712-afea-7b030d0b98b3",
+    "createdTimestamp" : 1707890975834,
+    "username" : "maskatsum@digital.go.jp",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "firstName" : "Masashi",
+    "lastName" : "Katsumata",
+    "email" : "maskatsum@digital.go.jp",
+    "attributes" : {
+      "api-key" : [ "SlolFhqIzSDz3r07dvKv7sxy97gaXpkBuwSpYSCisMxUi9aCFD" ]
+    },
+    "credentials" : [ {
+      "id" : "a2cc5cc9-3e90-4267-a6a2-5c8c801fbe00",
+      "type" : "password",
+      "createdDate" : 1707890975858,
+      "secretData" : "{\"value\":\"MCwA2nheYvxuJuLhSnNRJwHE+wZbd1Iv1/D7eNRlbfE=\",\"salt\":\"K+Y37+3UCH+/NTqRFThn7w==\",\"additionalParameters\":{}}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\",\"additionalParameters\":{}}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "default-roles-example" ],
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}
