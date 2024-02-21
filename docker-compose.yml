@@ -10,45 +10,27 @@ networks:
     
 services:
 
-  keycloak-mysql-db:
-    image: mysql:8.0.27
-    container_name: keycloak-mysql
-    volumes:
-      - ./_volumes/mysql_data:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - 3306:3306
-    networks:
-      - internal
-    healthcheck:
-      test: mysql ${MYSQL_DATABASE} --user=${MYSQL_USER} --password='${MYSQL_PASSWORD}' --silent --execute "SELECT 1;"
-      interval: 30s
-      timeout: 10s
-      retries: 5  
-      
   keycloak:
-    depends_on:
-      keycloak-mysql-db:
-        condition: "service_healthy"
-
     container_name: keycloak
-    #build:
-    #  context: ./keycloak/   
-    image: quay.io/keycloak/keycloak:23.0.5
+    env_file:
+      - path: .env
+        required: true
+      - path: .env.production
+        required: false
+
+    build:
+      context: ./keycloak/   
+    # image: quay.io/keycloak/keycloak:23.0.5
     environment:
       # https://qiita.com/uturned0/items/e9256c48ccba6f588d79
       KC_DB: mysql
-      KC_DB_URL_HOST: keycloak-mysql-db
+      KC_DB_URL_HOST: ${MYSQL_HOST}
       KC_DB_USERNAME: ${MYSQL_USER}
       KC_DB_PASSWORD: ${MYSQL_PASSWORD}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       
-      KC_HOSTNAME: "localhost:8080"
+      KC_HOSTNAME: ${KC_HOSTNAME}
       #to keep compatible with other services that are expecting /auth
       KC_HTTP_RELATIVE_PATH: /auth
 
@@ -63,7 +45,7 @@ services:
       - ./keycloak/api-key-module/target/deploy:/opt/keycloak/providers/
 
     ports:
-      - 8080:8080
+      - 80:8080
     command:
       - start-dev
     networks:
@@ -75,23 +57,7 @@ services:
       context: ./dashboard-service/   
     environment:
       REALM_NAME: example
+      KC_URL: ${KC_URL}
     ports:
-      - "8180:8180"
+      - 8080:8081
 
-  # for debugging
-  phpmyadmin:
-    container_name: keycloak-phpmyadmin
-    image: phpmyadmin:latest
-    ports:
-      - 3001:80
-    environment:
-      PMA_HOST: keycloak-mysql-db
-      UPLOAD_LIMIT: 1G
-    networks:
-      - internal
-    depends_on:
-      - keycloak-mysql-db
-    links:
-      - keycloak-mysql-db
-    volumes:
-      - ./_sessions:/sessions
