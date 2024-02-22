@@ -44,7 +44,8 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT: "false"
       KC_HOSTNAME_STRICT_HTTPS: "false"
-      KC_PROXY: "edge"
+      # KC_PROXY: "edge"
+      PROXY_ADDRESS_FORWARDING: "true"
       JAVA_OPTS_APPEND: "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/import -Dkeycloak.migration.strategy=IGNORE_EXISTING"
     volumes:
       - ./keycloak/import:/import

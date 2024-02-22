@@ -1,0 +1,4 @@
+include:
+  - path: 
+    - compose-common.yaml
+    - compose-product.yaml
