@@ -513,7 +513,7 @@
     "clientId" : "dashboard-client",
     "name" : "",
     "description" : "",
-    "rootUrl" : "/",
+    "rootUrl" : "http://localhost/",
     "adminUrl" : "",
     "baseUrl" : "/dashboard",
     "surrogateAuthRequired" : false,

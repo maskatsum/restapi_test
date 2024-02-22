@@ -1,5 +1,3 @@
-version: '3.9'
-
 volumes:
   _volumes:
   _sessions:
@@ -20,11 +18,11 @@ services:
 
   keycloak:
     container_name: keycloak
-    env_file:
-      - path: .env
-        required: true
-      - path: .env.production
-        required: false
+    # env_file:
+    #   - path: .env
+    #     required: true
+    #   - path: .env.production
+    #     required: false
 
     build:
       context: ./keycloak/   
@@ -32,13 +30,13 @@ services:
     environment:
       # https://qiita.com/uturned0/items/e9256c48ccba6f588d79
       KC_DB: mysql
-      KC_DB_URL_HOST: ${MYSQL_HOST}
-      KC_DB_USERNAME: ${MYSQL_USER}
-      KC_DB_PASSWORD: ${MYSQL_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB_URL_HOST: ${MYSQL_HOST:-localhost}
+      KC_DB_USERNAME: ${MYSQL_USER:-user}
+      KC_DB_PASSWORD: ${MYSQL_PASSWORD:-password}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
       
-      KC_HOSTNAME: ${KC_HOSTNAME}
+      KC_HOSTNAME: ${KC_HOSTNAME:-localhost}
       #to keep compatible with other services that are expecting /auth
       KC_HTTP_RELATIVE_PATH: /auth
 
