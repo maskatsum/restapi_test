@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DashboardController {
 
 
-  @GetMapping(value = "/dashboard/user", produces = "application/json")
+  @GetMapping(value = "/user", produces = "application/json")
   @ResponseBody
   public AccessToken getUserInfo(HttpServletRequest request) {
     return ((KeycloakPrincipal<RefreshableKeycloakSecurityContext>)((KeycloakAuthenticationToken)request.getUserPrincipal()).getPrincipal()).getKeycloakSecurityContext().getToken();
   }
 
-  @PostMapping("/dashboard/logout")
+  @PostMapping("/logout")
   public @ResponseBody void logout(HttpServletRequest request) throws Exception {
     request.logout();
 
