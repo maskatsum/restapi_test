@@ -51,7 +51,7 @@ passportSetup(app, {
     keyCloak: credeintial,
 });
 
-// app.get('/', loginPage);
+app.get('/', loginPage);
 // app.post(
 //     '/auth',
 //     passport.authenticate(KeyCloakStrategy.name, {

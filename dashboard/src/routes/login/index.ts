@@ -5,5 +5,6 @@ export default function (
     res: express.Response,
     next: express.NextFunction,
 ) {
+    console.log(new Date());
     res.render('login');
 }
