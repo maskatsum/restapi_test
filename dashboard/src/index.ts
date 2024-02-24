@@ -29,8 +29,7 @@ app.use(bodyParser.urlencoded({
 
 const config = {
     'realm': 'example',
-    'realm-public-key': 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxfcsLy0+GQgzv8U9JCMndOEvdrKL4EODDd6v4hkzVaOUHBNWkjfJqQPEUi1TQ8wRM/zGN2MLsfNMz7QTdRXzQLRH6jcHNrKnfBJ6TCmvBOtG3mI7iXFYSLjvlnpxxi1oQNzaX5Fr4f8EvWf48Fg3/34t+TlGBYgIB04xKHNU8RVZbr87CQBhjBS01fRG0fqCQXRKBMp2eWw/XRO9C8LUhYxdUaQXNOygLYkY4ripe2dClfvcONaUeUQYdI/vrIvL0rPhczRxbxNiy5HXiDkvHy3sKbLpXc2+mug+qi1FisV+bSHQIGubzKBzXXt6yUoZFjyizqyYjvMbFfvEwOTIhwIDAQAB',
-    'auth-server-url': 'http://localhost:8080/admin/example/console/',
+    'auth-server-url': '/_/auth',
     'ssl-required': 'external',
     'resource': 'dashboard-client',
     'public-client': true,
@@ -38,14 +37,14 @@ const config = {
 };
 
 const memoryStore = new session.MemoryStore();
-// const keycloak = keycloakSetup(app, {
-//     store: memoryStore,
-//     paths: {
-//         'admin': '/',
-//         'logout': '/logout',
-//     },
-//     config,
-// });
+const keycloak = keycloakSetup(app, {
+    store: memoryStore,
+    paths: {
+        'admin': '/',
+        'logout': '/logout',
+    },
+    config,
+});
 passportSetup(app, {
     store: memoryStore,
     keyCloak: credeintial,

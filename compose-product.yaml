@@ -1,4 +1,11 @@
 services:
+  dashboard-service:
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      KC_URL: http://KC_HOSTNAME
+
   keycloak:
     env_file:
       - path: .env

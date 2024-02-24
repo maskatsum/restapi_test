@@ -38,7 +38,7 @@ services:
       
       KC_HOSTNAME: ${KC_HOSTNAME:-localhost}
       #to keep compatible with other services that are expecting /auth
-      KC_HTTP_RELATIVE_PATH: /keycloak/auth
+      KC_HTTP_RELATIVE_PATH: /_/auth
 
       # https://stackoverflow.com/a/75649421
       KC_HTTP_ENABLED: true
@@ -52,7 +52,7 @@ services:
       - ./keycloak/api-key-module/target/deploy:/opt/keycloak/providers/
 
     ports:
-      - 8080:8080
+      - 4000:8080
     command:
       - start-dev
     networks:
@@ -64,6 +64,8 @@ services:
       context: ./dashboard-service/   
     environment:
       REALM_NAME: example
+      KEY_CLOAK_AUTH_URL: http://host-gateway:3000/_/auth
     ports:
-      - 8081:8081
-
+      - 4001:4001
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

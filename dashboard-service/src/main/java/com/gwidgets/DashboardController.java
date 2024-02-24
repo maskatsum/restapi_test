@@ -23,10 +23,5 @@ public class DashboardController {
   @PostMapping("/logout")
   public @ResponseBody void logout(HttpServletRequest request) throws Exception {
     request.logout();
-
-
-
-
-
   }
 }
