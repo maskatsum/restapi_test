@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "type": "java",
+        "name": "debug (launch)",
+        "request": "launch",
+        "stopOnEntry": true,
+        "cwd": "${workspaceFolder}/demo",
+        "console": "internalConsole",
+        "mainClass": "com.example.demo.DashboardApplication",
+      },
+      {
         "type": "node",
         "request": "launch",
         "name": "start",
@@ -12,7 +21,7 @@
         "preLaunchTask": "npm: build - dashboard",
         "runtimeArgs": [
           "--require",
-          "ts-node/register",
+          "ts-node/register"
         ],
         "skipFiles": [
           "<node_internals>/**"
@@ -20,7 +29,7 @@
         "cwd": "${workspaceFolder}/dashboard",
         "args": [],
         "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen",
+        "internalConsoleOptions": "neverOpen"
       }
     ]
   }

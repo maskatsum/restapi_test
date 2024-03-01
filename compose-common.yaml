@@ -36,7 +36,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
       
-      KC_HOSTNAME: ${KC_HOSTNAME:-localhost}
+      KC_HOSTNAME: ${KC_HOSTNAME:-host.docker.internal}
       #to keep compatible with other services that are expecting /auth
       KC_HTTP_RELATIVE_PATH: /_/auth
 
@@ -58,14 +58,13 @@ services:
     networks:
       - internal
 
-  # for demonstration
-  dashboard-service:
-    build:
-      context: ./dashboard-service/   
-    environment:
-      REALM_NAME: example
-      KEY_CLOAK_AUTH_URL: http://host-gateway:3000/_/auth
-    ports:
-      - 4001:4001
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+  # dashboard:
+  #   build:
+  #     context: ./dashboard-service/   
+  #   environment:
+  #     REALM_NAME: example
+  #     KEY_CLOAK_AUTH_URL: http://host-gateway:3000/_/auth
+  #   ports:
+  #     - 4001:4001
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"

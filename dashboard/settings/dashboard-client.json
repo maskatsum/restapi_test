@@ -1,6 +1,0 @@
-{
-    "clientId": "dashboard-client",
-    "clientSecret": "5miNsmuu84QJTVj1H1a9KvPR1xYyGb3e",
-    "realm": "example",
-    "url": "http://localhost:8080/auth"
-}

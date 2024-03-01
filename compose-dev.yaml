@@ -3,9 +3,9 @@ networks:
     driver: bridge
 
 services:
-  dashboard-service:
-    environment:
-      KC_URL: http://localhost
+  # dashboard-service:
+  #   environment:
+  #     KC_URL: http://localhost
 
   keycloak-mysql-db:
     image: mysql:8.0.27
