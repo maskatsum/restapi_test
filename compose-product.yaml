@@ -1,10 +1,10 @@
 services:
-  dashboard-service:
+  dashboard:
     env_file:
       - path: .env
         required: true
     environment:
-      KC_URL: http://KC_HOSTNAME
+      KEY_CLOAK_AUTH_URL: http://host.docker.internal:3000/auth/realms/kana-api
 
   keycloak:
     env_file:
@@ -17,4 +17,5 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_HOSTNAME: ${KC_HOSTNAME}
+      DASHBOARD_ROOT_URL: https://aws.com
 

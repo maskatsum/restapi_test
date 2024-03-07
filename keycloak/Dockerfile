@@ -10,6 +10,11 @@ COPY ./api-key-module /root/api-key-module
 RUN cd /root/api-key-module && mvn package
 
 FROM quay.io/keycloak/keycloak:23.0.5
+
+# Enable health and metrics support
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+
 WORKDIR /opt/keycloak/
 RUN id -u keycloak
 COPY --from=builder /root/api-key-module/target/deploy /opt/keycloak/providers/

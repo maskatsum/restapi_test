@@ -313,7 +313,7 @@
       "clientId": "dashboard-client",
       "name": "",
       "description": "",
-      "rootUrl": "http://localhost:8080/",
+      "rootUrl": "http://dashboard:8080",
       "adminUrl": "",
       "baseUrl": "",
       "surrogateAuthRequired": false,
@@ -322,7 +322,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "cb5BVbUGvYixfzHD1xifC7h7KQ7cSn0c",
       "redirectUris": [
-        "http://localhost:8080/*"
+        "*"
       ],
       "webOrigins": [
         "*"

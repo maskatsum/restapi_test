@@ -1,0 +1,8 @@
+.clippy img {
+    margin-top: -3px;
+    position: relative;
+    top: 3px;
+    width: 13px;
+    height: 13px;
+    pointer-events: none;
+}

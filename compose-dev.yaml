@@ -1,11 +1,14 @@
+volumes:
+  _volumes:
+
 networks:
   internal:
     driver: bridge
 
 services:
-  # dashboard-service:
-  #   environment:
-  #     KC_URL: http://localhost
+  dashboard:
+    environment:
+      KEY_CLOAK_AUTH_URL: http://keycloak:8080/auth/realms/kana-api
 
   keycloak-mysql-db:
     image: mysql:8.0.27
@@ -18,22 +21,19 @@ services:
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: dbpassword
 
-    ports:
-      - 3306:3306
-    networks:
-      - internal
     healthcheck:
       test: mysql keycloak --user=dbuser --password='dbpassword' --silent --execute "SELECT 1;"
       interval: 30s
       timeout: 10s
-      retries: 5  
+      retries: 5
+    networks:
+      - internal
 
   keycloak:
     depends_on:
-      keycloak-mysql-db:
-        condition: "service_healthy"
-    links:
       - keycloak-mysql-db
+      # keycloak-mysql-db:
+      #   condition: "service_healthy"
     environment:
       # https://qiita.com/uturned0/items/e9256c48ccba6f588d79
       KC_DB_URL_HOST: keycloak-mysql-db
@@ -44,19 +44,19 @@ services:
       KC_HOSTNAME: localhost
 
   # for debugging
-  phpmyadmin:
-    container_name: keycloak-phpmyadmin
-    image: phpmyadmin:latest
-    ports:
-      - 3001:80
-    environment:
-      PMA_HOST: keycloak-mysql-db
-      UPLOAD_LIMIT: 1G
-    networks:
-      - internal
-    depends_on:
-      - keycloak-mysql-db
-    links:
-      - keycloak-mysql-db
-    volumes:
-      - ./_sessions:/sessions
+  # phpmyadmin:
+  #   container_name: keycloak-phpmyadmin
+  #   image: phpmyadmin:latest
+  #   ports:
+  #     - 3001:80
+  #   environment:
+  #     PMA_HOST: keycloak-mysql-db
+  #     UPLOAD_LIMIT: 1G
+  #   # networks:
+  #   #   - internal
+  #   # depends_on:
+  #   #   - keycloak-mysql-db
+  #   volumes:
+  #     - ./_sessions:/sessions
+  #   networks:
+  #     - internal
