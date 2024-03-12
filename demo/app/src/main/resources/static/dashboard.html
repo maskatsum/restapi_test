@@ -3,7 +3,11 @@
   <body>
     <h1>Dashboard</h1>
     <p>
-      Your api key is
+      こんにちは、${userData.name} さん。<br>
+      <br>
+      あなたのAPIキー: <input type="text" size="32" readonly value="${userData['api-key']}"/>
+      <br>
+      <a href="/logout">ログアウト</a>
     </p>
   </body>
 </html>

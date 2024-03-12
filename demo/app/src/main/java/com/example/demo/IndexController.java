@@ -16,23 +16,27 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
     
     @GetMapping("/dashboard")
-    public HashMap<String, String> index() {
+    public ModelAndView index() {
+        ModelAndView result = new ModelAndView();
+        result.setViewName("dashboard");
+
         // Get a successful user login
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         OAuth2User user = (OAuth2User) authentication.getPrincipal();
         
         Map<String, Object> attr = user.getAttributes();
-        HashMap<String, String> result = new HashMap<>();
+        HashMap<String, String> userData = new HashMap<>();
         for (String key : attr.keySet()) {
-            result.put(key, attr.get(key).toString());
+            userData.put(key, attr.get(key).toString());
         }
+        result.addObject("userData", userData);
         
         return result;
     }
 
     @RequestMapping("/")
-    ModelAndView home() {
+    public ModelAndView home() {
         ModelAndView result = new ModelAndView();
         result.setViewName("home");
         return result;
