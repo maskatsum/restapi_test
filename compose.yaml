@@ -46,3 +46,5 @@ services:
       - start-dev
     networks:
       - internal
+    ports:
+      - 80:80
