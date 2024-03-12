@@ -44,7 +44,5 @@ services:
       - ./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf
     command:
       - start-dev
-    networks:
-      - internal
     ports:
       - 80:80
