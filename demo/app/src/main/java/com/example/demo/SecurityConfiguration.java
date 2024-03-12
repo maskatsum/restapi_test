@@ -46,7 +46,7 @@ public class SecurityConfiguration  {
 	LogoutHandler oidcLogoutHandler() {
 		return (request, response, authentication) -> {
 			try {
-				response.sendRedirect(issuer + "/protocol/openid-connect/logout?redirect_uri=http://ec2-54-95-96-74.ap-northeast-1.compute.amazonaws.com");
+				response.sendRedirect(issuer + "/protocol/openid-connect/logout?redirect_uri=http%3A%2F%2Fec2-54-95-96-74.ap-northeast-1.compute.amazonaws.com");
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
