@@ -7,25 +7,25 @@ networks:
     driver: bridge
     
 services:
-  reverse-proxy:
-    image: nginx
-    volumes:
-      - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 80:80
-    networks:
-      - internal
-    links:
-      - keycloak
-      - dashboard
+  # reverse-proxy:
+  #   image: nginx
+  #   volumes:
+  #     - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #     - internal
+  #   links:
+  #     - keycloak
+  #     - dashboard
 
-  dashboard:
-    depends_on:
-      - keycloak
-    build:
-      context: ./dashboard-node/
-    networks:
-      - internal
+  # dashboard:
+  #   depends_on:
+  #     - keycloak
+  #   build:
+  #     context: ./dashboard-node/
+  #   networks:
+  #     - internal
 
   # dashboard:
   #   depends_on:
@@ -59,8 +59,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
       
-      KC_HOSTNAME: localhost
-      # KC_HOSTNAME: ${KC_HOSTNAME:-keycloak}
+      KC_HOSTNAME: ${KC_HOSTNAME:-localhost}
       #to keep compatible with other services that are expecting /auth
       KC_HTTP_RELATIVE_PATH: /auth
 
