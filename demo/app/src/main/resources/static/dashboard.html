@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
   <body>
     <h1>Dashboard</h1>
     <p>
-      こんにちは、${userData.name} さん。<br>
+      こんにちは、<span th:text="${userData.name}"></span> さん。<br>
       <br>
-      あなたのAPIキー: <input type="text" size="32" readonly value="${userData['api-key']}"/>
+      あなたのAPIキー: <input type="text" size="32" readonly th:value="${userData['api-key']}"/>
       <br>
       <a href="/logout">ログアウト</a>
     </p>
