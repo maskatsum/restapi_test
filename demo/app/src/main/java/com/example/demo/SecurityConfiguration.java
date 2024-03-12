@@ -45,30 +45,17 @@ public class SecurityConfiguration  {
 	@Value("${spring.security.oauth2.client.registration.example.client-id}")
 	private String clientId;
 
-	LogoutHandler oidcLogoutHandler() {
-		return (request, response, authentication) -> {
-			try {
-				response.sendRedirect(issuer + "v2/logout?client_id=" + clientId + "&returnTo=http://localhost:8080/");
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		};
-	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-//		http.oauth2Client().and()
-//			.oauth2Login()
-//			.tokenEndpoint().and()
-//			.userInfoEndpoint();
+
 		http.oauth2Login(Customizer.withDefaults());
 		
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.cors(AbstractHttpConfigurer::disable);
 
 		http.authorizeHttpRequests(auth -> auth
-			.requestMatchers("/unauthenticated", "/oauth2/**", "/login/**", "/welcome").permitAll()
+			.requestMatchers("/unauthenticated", "/oauth2/**", "/login/**", "/").permitAll()
 			.anyRequest().fullyAuthenticated()
 		);
 
@@ -78,52 +65,6 @@ public class SecurityConfiguration  {
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		
 		return http.build();
-	}
-
-	@Bean
-	public OAuth2AuthorizedClientManager authorizedClientManager(
-			ClientRegistrationRepository clientRegistrationRepository,
-			OAuth2AuthorizedClientRepository authorizedClientRepository) {
-
-		OAuth2AuthorizedClientProvider authorizedClientProvider =
-				OAuth2AuthorizedClientProviderBuilder.builder()
-						.authorizationCode()
-						.refreshToken()
-						.clientCredentials()
-//						.password()
-						.build();
-
-		DefaultOAuth2AuthorizedClientManager authorizedClientManager =
-				new DefaultOAuth2AuthorizedClientManager(
-						clientRegistrationRepository, authorizedClientRepository);
-		authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
-
-		return authorizedClientManager;
-	}
-	private ClientRegistration keyCloakClientRegistration() {
-		return ClientRegistration.withRegistrationId("google")
-				.clientId("google-client-id")
-				.clientSecret("google-client-secret")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
-				.scope("openid", "profile", "email", "address", "phone")
-				.authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
-				.tokenUri("https://www.googleapis.com/oauth2/v4/token")
-				.userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
-				.userNameAttributeName(IdTokenClaimNames.SUB)
-				.jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
-				.clientName("Google")
-				.build();
-	}
-
-	private static Converter<OAuth2AuthorizationCodeGrantRequest, MultiValueMap<String, String>> parametersConverter() {
-		return (grantRequest) -> {
-			MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-			parameters.set("audience", "xyz_value");
-
-			return parameters;
-		};
 	}
 
 }

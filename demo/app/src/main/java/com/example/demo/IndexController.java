@@ -38,11 +38,4 @@ public class IndexController {
         result.setViewName("home");
         return result;
     }
-    
-    @GetMapping("/unauthenticated")
-    public HashMap<String, String> unauthenticatedRequests() {
-        return new HashMap<String, String>(){{
-            put("this is", "unauthenticated endpoint");
-        }};
-    }
 }
