@@ -19,7 +19,8 @@ WORKDIR /opt/keycloak/
 RUN id -u keycloak
 COPY --from=builder /root/api-key-module/target/deploy /opt/keycloak/providers/
 
-EXPOSE 8080
+EXPOSE 80
+EXPOSE 8443
 
 ENTRYPOINT [ "/opt/keycloak/bin/kc.sh"]
-CMD ["start-dev"]
+CMD ["start-dev", "--proxy-headers", "forwarded", "--http-port", "80"]

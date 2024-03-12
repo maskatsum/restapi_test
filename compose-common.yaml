@@ -8,6 +8,7 @@ networks:
     
 services:
   reverse-proxy:
+    container_name: rproxy
     image: nginx
     volumes:
       - ./reverse-proxy/nginx.conf:/etc/nginx/nginx.conf
@@ -59,8 +60,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
       
-      KC_HOSTNAME: localhost
-      # KC_HOSTNAME: ${KC_HOSTNAME:-keycloak}
+      KC_HOSTNAME: ${KC_HOSTNAME:-keycloak}
       #to keep compatible with other services that are expecting /auth
       KC_HTTP_RELATIVE_PATH: /auth
 
@@ -74,7 +74,8 @@ services:
     
     volumes:
       - ./keycloak/import:/import
-      - ./keycloak/api-key-module/target/deploy:/opt/keycloak/providers/
+      - ./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+      # - ./keycloak/api-key-module/target/deploy:/opt/keycloak/providers/
     command:
       - start-dev
     networks:

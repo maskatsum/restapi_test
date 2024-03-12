@@ -37,15 +37,18 @@ app.use(session({
 
 const keycloak = new KeyCloak({
     store: memoryStore,
+    'scope': 'profile',
 }, {
-    'realm': 'kana-api',
-    'auth-server-url': 'http://localhost/auth',
-    'ssl-required': 'none',
-    'resource': 'dashboard-client',
-    'confidential-port': 4443,
+  "realm": "kana-api",
+  "auth-server-url": "http://ec2-52-68-52-194.ap-northeast-1.compute.amazonaws.com/auth/",
+  "ssl-required": "none",
+  "resource": "dashboard-client",
+  "confidential-port": 0,
 });
-
-app.use(keycloak.middleware());
+app.use(keycloak.middleware({
+    logout: '/auth/logout',
+    admin: '/',
+}));
 
 app.get('/', loginPage);
 // app.post(
@@ -64,4 +67,4 @@ app.get(
     }
 );
 
-app.listen(8000);
+app.listen(80);
