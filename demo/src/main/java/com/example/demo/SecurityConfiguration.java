@@ -28,9 +28,9 @@ public class SecurityConfiguration  {
 			.authorizeHttpRequests(auth -> auth
 					.requestMatchers("/unauthenticated", "/oauth2/**", "/login/**", "/welcome").permitAll()
 					.anyRequest().fullyAuthenticated()
-			)
-			.logout(logout -> logout
-					.logoutSuccessUrl("http://localhost:8080/welcome")
+//			)
+//			.logout(logout -> logout
+///					.logoutSuccessUrl("http://localhost:8080/welcome")
 			);
 		
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
