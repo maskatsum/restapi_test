@@ -33,6 +33,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -45,14 +46,15 @@ public class SecurityConfiguration  {
 	@Value("${spring.security.oauth2.client.provider.external.issuer-uri}")
 	private String issuer;
 
-	LogoutHandler oidcLogoutHandler() {
+
+	LogoutHandler oauth2LogoutHandler() {
 		return (request, response, authentication) -> {
 			try {
 				response.sendRedirect(String.format(
 						"%s/protocol/openid-connect/logout?client_id=%s&post_logout_redirect_uri=%s",
 						issuer,
 						clientId,
-						"http://ec2-54-95-96-74.ap-northeast-1.compute.amazonaws.com"
+						getRedirectUrlAfterLogout()
 				));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
@@ -60,24 +62,31 @@ public class SecurityConfiguration  {
 		};
 	}
 
+	private String getRedirectUrlAfterLogout() {
+		return ServletUriComponentsBuilder.fromCurrentContextPath().build().toString();
+	}
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
 		http.oauth2Login(Customizer.withDefaults());
-		
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.cors(AbstractHttpConfigurer::disable);
 
+		// dashboard/* 以下だけアクセス制限を適用する
+		// それ以外は、アクセスできるようにする
 		http.authorizeHttpRequests(auth -> auth
 			.requestMatchers("/dashboard", "/dashboard/**").fullyAuthenticated()
-//			.requestMatchers( "/oauth2/**", "/login/**", "/").permitAll()
 			.anyRequest().permitAll()
 		);
 
-		http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.addLogoutHandler(oidcLogoutHandler()));
+		// ログアウトハンドラーの設定
+		http.logout(logout -> logout
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.addLogoutHandler(oauth2LogoutHandler()));
 
-		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+		http.sessionManagement(session -> session
+				.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		
 		return http.build();
 	}
