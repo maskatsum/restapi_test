@@ -62,8 +62,9 @@ public class SecurityConfiguration  {
 		http.cors(AbstractHttpConfigurer::disable);
 
 		http.authorizeHttpRequests(auth -> auth
-			.requestMatchers( "/oauth2/**", "/login/**", "/").permitAll()
-			.anyRequest().fullyAuthenticated()
+			.requestMatchers("/dashboard", "/dashboard/**").fullyAuthenticated()
+//			.requestMatchers( "/oauth2/**", "/login/**", "/").permitAll()
+			.anyRequest().permitAll()
 		);
 
 		http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
