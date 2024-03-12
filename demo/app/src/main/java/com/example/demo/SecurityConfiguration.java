@@ -39,6 +39,8 @@ import java.io.IOException;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration  {
+	@Value("${spring.security.oauth2.client.registration.example.client-id}")
+	private String clientId;
 
 	@Value("${spring.security.oauth2.client.provider.external.issuer-uri}")
 	private String issuer;
@@ -46,7 +48,12 @@ public class SecurityConfiguration  {
 	LogoutHandler oidcLogoutHandler() {
 		return (request, response, authentication) -> {
 			try {
-				response.sendRedirect(issuer + "/protocol/openid-connect/logout?redirect_uri=http%3A%2F%2Fec2-54-95-96-74.ap-northeast-1.compute.amazonaws.com");
+				response.sendRedirect(String.format(
+						"%s/protocol/openid-connect/logout?client_id=%s&post_logout_redirect_uri=%s",
+						issuer,
+						clientId,
+						"http://ec2-54-95-96-74.ap-northeast-1.compute.amazonaws.com"
+				));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
