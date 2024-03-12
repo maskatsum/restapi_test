@@ -12,11 +12,11 @@ RUN cd /opt/maven && \
   tar xzvf apache-maven-3.9.6-bin.tar.gz
 ENV PATH="${PATH}:/opt/maven/apache-maven-3.9.6/bin"
 
-WORKDIR  /opt/gradle
-RUN wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
-RUN unzip gradle-8.5-bin.zip
-RUN mv gradle-8.5 /usr/local/gradle
-ENV PATH=${PATH}:/usr/local/gradle/bin
+#WORKDIR  /opt/gradle
+#RUN wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
+#RUN unzip gradle-8.5-bin.zip
+#RUN mv gradle-8.5 /usr/local/gradle
+#ENV PATH=${PATH}:/usr/local/gradle/bin
 
 # RUN mkdir /app
 WORKDIR /app
