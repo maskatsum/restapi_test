@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("serial")
 public class IndexController {
     
-    @GetMapping("/")
+    @GetMapping("/dashboard")
     public HashMap<String, String> index() {
         // Get a successful user login
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -31,9 +31,11 @@ public class IndexController {
         return result;
     }
 
-    @RequestMapping("/welcome")
-    String home() {
-        return "Hello World3!";
+    @RequestMapping("/")
+    ModelAndView home() {
+        ModelAndView result = new ModelAndView();
+        result.setViewName("home");
+        return modelAndView;
     }
     
     @GetMapping("/unauthenticated")

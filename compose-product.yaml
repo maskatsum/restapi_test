@@ -4,7 +4,8 @@ services:
       - path: .env
         required: true
     environment:
-      KC_URL: http://ec2-13-231-162-160.ap-northeast-1.compute.amazonaws.com/auth
+      # KC_URL: http://ec2-13-231-162-160.ap-northeast-1.compute.amazonaws.com/auth
+      KC_URL: http://${KC_HOSTNAME}/auth
 
   keycloak:
     env_file:
