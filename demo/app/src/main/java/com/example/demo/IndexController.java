@@ -17,8 +17,7 @@ public class IndexController {
     
     @GetMapping("/dashboard")
     public ModelAndView index() {
-        ModelAndView result = new ModelAndView();
-        result.setViewName("dashboard");
+        ModelAndView result = new ModelAndView("view/dashboard");
 
         // Get a successful user login
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -37,8 +36,6 @@ public class IndexController {
 
     @RequestMapping("/")
     public ModelAndView home() {
-        ModelAndView result = new ModelAndView();
-        result.setViewName("home");
-        return result;
+        return new ModelAndView("view/home");
     }
 }
