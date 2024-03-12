@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@SuppressWarnings("serial")
 public class IndexController {
     
     @GetMapping("/dashboard")

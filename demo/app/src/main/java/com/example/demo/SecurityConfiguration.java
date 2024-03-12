@@ -42,9 +42,16 @@ public class SecurityConfiguration  {
 
 	@Value("${spring.security.oauth2.client.provider.external.issuer-uri}")
 	private String issuer;
-	@Value("${spring.security.oauth2.client.registration.example.client-id}")
-	private String clientId;
 
+	LogoutHandler oidcLogoutHandler() {
+		return (request, response, authentication) -> {
+			try {
+				response.sendRedirect(issuer + "/protocol/openid-connect/logout?redirect_uri=http://ec2-54-95-96-74.ap-northeast-1.compute.amazonaws.com");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		};
+	}
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -55,12 +62,12 @@ public class SecurityConfiguration  {
 		http.cors(AbstractHttpConfigurer::disable);
 
 		http.authorizeHttpRequests(auth -> auth
-			.requestMatchers("/unauthenticated", "/oauth2/**", "/login/**", "/").permitAll()
+			.requestMatchers( "/oauth2/**", "/login/**", "/").permitAll()
 			.anyRequest().fullyAuthenticated()
 		);
 
-//		http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//				.addLogoutHandler(oidcLogoutHandler()));
+		http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.addLogoutHandler(oidcLogoutHandler()));
 
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
 		
