@@ -1,4 +1,48 @@
-include:
-  - path: 
-    - compose-common.yaml
-    - compose-dev.yaml
+volumes:
+  _volumes:
+  _sessions:
+
+services:
+  keycloak:
+    env_file:
+      - path: .env
+        required: true
+
+    container_name: keycloak
+    # healthcheck:
+    #   test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8081/health/live']
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5  
+
+    build:
+      context: ./keycloak/   
+    # image: quay.io/keycloak/keycloak:23.0.5
+    environment:
+      # https://qiita.com/uturned0/items/e9256c48ccba6f588d79
+      KC_DB: mysql
+      KC_DB_URL_HOST: ${MYSQL_HOST:-localhost}
+      KC_DB_USERNAME: ${MYSQL_USER:-user}
+      KC_DB_PASSWORD: ${MYSQL_PASSWORD:-password}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-password}
+      
+      KC_HOSTNAME: ${KC_HOSTNAME:-localhost}
+      #to keep compatible with other services that are expecting /auth
+      KC_HTTP_RELATIVE_PATH: /auth
+
+      # https://stackoverflow.com/a/75649421
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_PROXY: edge
+      PROXY_ADDRESS_FORWARDING: true
+      JAVA_OPTS_APPEND: "-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/import -Dkeycloak.migration.strategy=IGNORE_EXISTING"
+    
+    volumes:
+      - ./keycloak/import:/import
+      - ./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf
+    command:
+      - start-dev
+    networks:
+      - internal
