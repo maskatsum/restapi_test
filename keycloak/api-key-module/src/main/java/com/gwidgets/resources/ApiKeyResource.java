@@ -19,7 +19,7 @@ public class ApiKeyResource {
 
     @GET
     @Produces("application/json")
-    public Response checkApiKey(@QueryParam("apiKey") String apiKey) {
+    public Response checkApiKey(@QueryParam("key") String apiKey) {
         return session.users().searchForUserByUserAttributeStream(session.getContext().getRealm(), "api-key", apiKey)
                 .findFirst().isPresent() ? Response.ok().type(MediaType.APPLICATION_JSON).build():
                 Response.status(401).type(MediaType.APPLICATION_JSON).build();
