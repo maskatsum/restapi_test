@@ -1,5 +1,6 @@
 ## ブランチについて
 
-2つの構成に分かれています。
+3つの構成に分かれています。
 - main .... ダッシュボードアプリのコード
 - keycloak ... Keycloakのコード
+- aws-lambda-auth ... AWS API Gatewayで Lambda Authorizationをするためのコード
