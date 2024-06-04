@@ -34,7 +34,7 @@ public class IndexController {
         return result;
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public ModelAndView home() {
         return new ModelAndView("home");
     }
