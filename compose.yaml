@@ -22,6 +22,7 @@ services:
       # https://qiita.com/uturned0/items/e9256c48ccba6f588d79
       KC_DB: mysql
       KC_DB_URL_HOST: ${MYSQL_HOST:-localhost}
+      KC_DB_URL_DATABASE: ${MYSQL_DATABASE:-keycloak}
       KC_DB_USERNAME: ${MYSQL_USER:-user}
       KC_DB_PASSWORD: ${MYSQL_PASSWORD:-password}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
